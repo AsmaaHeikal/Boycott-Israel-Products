@@ -4,6 +4,18 @@
 getItemsInOrderById(CustomerID, OrderID, Items) :-
     order(CustomerID, OrderID, Items).
 
+
+% Get the num of items in a specific customer order given customer Name
+% and order id.
+countItems([], 0).
+countItems([_|T],R):-
+    countItems(T,R1),
+    R is 1+R1.
+getNumOfItems(CustomerName, OrderID, Count) :-
+    customer(CustomerID, CustomerName),
+    order(CustomerID, OrderID, Items),
+    countItems(Items, Count).
+
 % calculate the difference in price between the boycott item and its alternative.
 getTheDifferenceInPriceBetweenItemAndAlternative(ItemName, A, DiffPrice):-
     item(ItemName, _, Price),
