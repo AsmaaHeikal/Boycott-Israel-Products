@@ -1,10 +1,10 @@
 :-consult(data).
-
+%Question 3
 % List all items in a specific customer order using customer id and order id.
 getItemsInOrderById(CustomerID, OrderID, Items) :-
     order(CustomerID, OrderID, Items).
 
-
+%Question 4
 % Get the num of items in a specific customer order given customer Name
 % and order id.
 countItems([], 0).
@@ -16,6 +16,20 @@ getNumOfItems(CustomerName, OrderID, Count) :-
     order(CustomerID, OrderID, Items),
     countItems(Items, Count).
 
+%Question 5
+%Calculate the price of a given order given Customer Name and order id
+countPriceItems([],0).
+countPriceItems([S|T],TP):-
+    countPriceItems(T,TP1),
+    item(S,_,P),
+    TP is TP1+P.
+
+calcPriceOfOrder(CustomerName,OrderID,TotalPrice):-
+    customer(CustomerID,CustomerName),
+    order(CustomerID,OrderID,Items),
+    countPriceItems(Items,TotalPrice).
+
+%Question 11
 % calculate the difference in price between the boycott item and its alternative.
 getTheDifferenceInPriceBetweenItemAndAlternative(ItemName, A, DiffPrice):-
     item(ItemName, _, Price),
@@ -23,6 +37,7 @@ getTheDifferenceInPriceBetweenItemAndAlternative(ItemName, A, DiffPrice):-
     item(A, _, AlternativePrice),
     DiffPrice is Price - AlternativePrice.
 
+%Question 12
 % Insert/Remove item, alternative and new boycott company to/from the knowledge base. Hint: assert to insert new fact and retract to remove a fact
 add_item(ItemName, CompanyName, Price) :-
     assert(item(ItemName, CompanyName, Price)).
