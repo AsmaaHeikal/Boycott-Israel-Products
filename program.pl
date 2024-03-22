@@ -29,6 +29,16 @@ calcPriceOfOrder(CustomerName,OrderID,TotalPrice):-
     order(CustomerID,OrderID,Items),
     countPriceItems(Items,TotalPrice).
 
+%Question 6
+%Given the item name or company name, determine whether to boycott or not.
+isBoycott(Company) :- boycott_company(Company,_).
+isBoycott(Item) :- item(Item, Company,_) , boycott_company(Company,_).
+
+%Question 7
+%Given the company name or an item name, find the justification why you need to boycott this company/item.
+whyToBoycott(Item ,Justfication) :- item(Item, Company, _), boycott_company(Company, Justfication).
+whyToBoycott(Company, Justification):- boycott_company(Company, Justification).
+
 %Question 11
 % calculate the difference in price between the boycott item and its alternative.
 getTheDifferenceInPriceBetweenItemAndAlternative(ItemName, A, DiffPrice):-
