@@ -28,6 +28,21 @@ collectOrders(CustomerID, X, [H|T], [order(CustomerID, X, H)|T1]):-
 	X1 is X + 1,
 	collectOrders(CustomerID,X1,T,T1).
 
+%Question 2
+%Get the number of orders of a specific customer given customer id.
+%
+%getCustomerInfo will get customer info either id or user name
+%whichever is needed
+
+getCustomerInfo(CustomerName,CustID):-
+    customer(CustID,CustomerName).
+
+countOrdersOfCustomer(CustomerID,Count):-
+    getCustomerInfo(CustomerName,CustomerID),
+    list_orders(CustomerName,L),%laila is on it
+    countItems(L,Count).
+
+
 %Question 3
 % List all items in a specific customer order using customer id and order id.
 getItemsInOrderById(CustomerID, OrderID, Items) :-
@@ -67,6 +82,24 @@ isBoycott(Item) :- item(Item, Company,_) , boycott_company(Company,_).
 %Given the company name or an item name, find the justification why you need to boycott this company/item.
 whyToBoycott(Item ,Justfication) :- item(Item, Company, _), boycott_company(Company, Justfication).
 whyToBoycott(Company, Justification):- boycott_company(Company, Justification).
+
+%Question 8
+%Given an username and order ID, remove all the boycott items from
+%this order.
+
+removeBoycott([], []).
+removeBoycott([H|T], Result) :-
+    isBoycott(H),
+    removeBoycott(T, Result).
+removeBoycott([H|T], [H|Result]) :-
+    \+ isBoycott(H),
+    removeBoycott(T, Result).
+
+removeBoycottItemsFromAnOrder(Username, OrderID, ResultList) :-
+    getCustomerInfo(Username, CustomerID),
+    getItemsInOrderById(CustomerID, OrderID, Items),
+    removeBoycott(Items, ResultList).
+
 
 %Question 11
 % calculate the difference in price between the boycott item and its alternative.
