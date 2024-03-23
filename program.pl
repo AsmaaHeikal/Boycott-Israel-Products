@@ -1,4 +1,33 @@
 :-consult(data).
+%Question 1
+%List all orders of a specific customer (as a list).
+biggestOrderNumber(CustomerID,N):-
+    order(CustomerID,N,_),
+    \+((
+        order(CustomerID,M,_),
+        M > N )).
+
+list_orders(CustomerName, ListOrders):-
+ customer(CustomerID, CustomerName),
+ collectItems(CustomerID, 1, ListItems),
+ collectOrders(CustomerID,1, ListItems, ListOrders).
+
+
+collectItems(CustomerID, X, [H|T]) :-
+ order(CustomerID, X, H),
+ X1 is X + 1,
+ collectItems(CustomerID, X1, T).
+
+collectItems(CustomerID, X, []) :-
+ biggestOrderNumber(CustomerID,X1),
+ X is X1+1.
+
+collectOrders(_,_, [],[]).
+
+collectOrders(CustomerID, X, [H|T], [order(CustomerID, X, H)|T1]):-
+	X1 is X + 1,
+	collectOrders(CustomerID,X1,T,T1).
+
 %Question 3
 % List all items in a specific customer order using customer id and order id.
 getItemsInOrderById(CustomerID, OrderID, Items) :-
