@@ -84,24 +84,6 @@ whyToBoycott(Item , Justfication) :- item(Item, Company, _) , boycott_company(Co
 Justfication).
 whyToBoycott(Company, Justification):- boycott_company(Company, Justification).
 
-%Question 9
-%Given an username and order ID, update the order such that all
-%boycott items are replaced by an alternative (if exists).
-replaceBoycottItemsFromAnOrder(Username, OrderID, NewList) :-
-    customer(CustomerID, Username),
-    order(CustomerID, OrderID, List),
-    replaceBoycottHelper(List, NewList).
-
-replaceBoycottHelper([], []).
-replaceBoycottHelper([H|T], [H|NewList]) :- 
-    \+ isBoycott(H),
-    replaceBoycottHelper(T, NewList).
-
-replaceBoycottHelper([H|T], [NewItem|NewList]):-
-    isBoycott(H),
-    alternative(H, NewItem),
-    replaceBoycottHelper(T, NewList).
-
 
 %Question 8
 %Given an username and order ID, remove all the boycott items from
@@ -119,6 +101,25 @@ removeBoycottItemsFromAnOrder(Username, OrderID, ResultList) :-
     getCustomerInfo(Username, CustomerID),
     getItemsInOrderById(CustomerID, OrderID, Items),
     removeBoycott(Items, ResultList).
+
+
+%Question 9
+%Given an username and order ID, update the order such that all
+%boycott items are replaced by an alternative (if exists).
+replaceBoycottItemsFromAnOrder(Username, OrderID, NewList) :-
+    customer(CustomerID, Username),
+    order(CustomerID, OrderID, List),
+    replaceBoycottHelper(List, NewList).
+
+replaceBoycottHelper([], []).
+replaceBoycottHelper([H|T], [H|NewList]) :- 
+    \+ isBoycott(H),
+    replaceBoycottHelper(T, NewList).
+
+replaceBoycottHelper([H|T], [NewItem|NewList]):-
+    isBoycott(H),
+    alternative(H, NewItem),
+    replaceBoycottHelper(T, NewList).
 
 
 %Question 11
