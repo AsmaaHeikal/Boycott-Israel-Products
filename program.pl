@@ -37,9 +37,15 @@ collectOrders(CustomerID, X, [H|T], [order(CustomerID, X, H)|T1]):-
 getCustomerInfo(CustomerName,CustID):-
     customer(CustID,CustomerName).
 
+%Using ID
 countOrdersOfCustomer(CustomerID,Count):-
     getCustomerInfo(CustomerName,CustomerID),
-    list_orders(CustomerName,L),%laila is on it
+    list_orders(CustomerName,L),
+    countItems(L,Count).
+
+%Using Username
+countOrdersOfCustomer(CustomerName,Count):-
+    list_orders(CustomerName,L),
     countItems(L,Count).
 
 
@@ -129,6 +135,17 @@ replaceBoycottHelper([H|T], [NewItem|NewList]):-
 %     isBoycott(H),
 %     alternative(H, NewItem),
 %     replaceBoycottHelper(T, NewList)
+
+
+
+%Question 10
+%Given an username and order ID, calculate the price of the order %after
+%replacing all boycott items by its alternative (if it exists).
+%
+
+calcPriceAfterReplacingBoycottItemsFromAnOrder(Username, OrderID, NewList, TotalPrice):-
+    replaceBoycottItemsFromAnOrder(Username, OrderID, NewList), 
+    countPriceItems(NewList,TotalPrice).
 
 
 %Question 11
