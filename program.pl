@@ -80,8 +80,28 @@ isBoycott(Item) :- item(Item, Company,_) , boycott_company(Company,_).
 
 %Question 7
 %Given the company name or an item name, find the justification why you need to boycott this company/item.
-whyToBoycott(Item ,Justfication) :- item(Item, Company, _), boycott_company(Company, Justfication).
+whyToBoycott(Item , Justfication) :- item(Item, Company, _) , boycott_company(Company,
+Justfication).
 whyToBoycott(Company, Justification):- boycott_company(Company, Justification).
+
+%Question 9
+%Given an username and order ID, update the order such that all
+%boycott items are replaced by an alternative (if exists).
+replaceBoycottItemsFromAnOrder(Username, OrderID, NewList) :-
+    customer(CustomerID, Username),
+    order(CustomerID, OrderID, List),
+    replaceBoycottHelper(List, NewList).
+
+replaceBoycottHelper([], []).
+replaceBoycottHelper([H|T], [H|NewList]) :- 
+    \+ isBoycott(H),
+    replaceBoycottHelper(T, NewList).
+
+replaceBoycottHelper([H|T], [NewItem|NewList]):-
+    isBoycott(H),
+    alternative(H, NewItem),
+    replaceBoycottHelper(T, NewList).
+
 
 %Question 8
 %Given an username and order ID, remove all the boycott items from
