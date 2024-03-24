@@ -113,11 +113,10 @@ replaceBoycottItemsFromAnOrder(Username, OrderID, NewList) :-
 
 replaceBoycottHelper([], []).
 replaceBoycottHelper([H|T], [H|NewList]) :- 
-    \+ isBoycott(H),
+    \+ alternative(H,_),
     replaceBoycottHelper(T, NewList).
 
 replaceBoycottHelper([H|T], [NewItem|NewList]):-
-    isBoycott(H),
     alternative(H, NewItem),
     replaceBoycottHelper(T, NewList).
 
