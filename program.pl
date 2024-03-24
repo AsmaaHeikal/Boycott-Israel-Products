@@ -120,6 +120,16 @@ replaceBoycottHelper([H|T], [NewItem|NewList]):-
     alternative(H, NewItem),
     replaceBoycottHelper(T, NewList).
 
+%Returns a list only if there is alternative for the boycotted items
+% replaceBoycottHelper([H|T], [H|NewList]) :- 
+%     \+ isBoycott(H),
+%     replaceBoycottHelper(T, NewList).
+
+% replaceBoycottHelper([H|T], [NewItem|NewList]):-
+%     isBoycott(H),
+%     alternative(H, NewItem),
+%     replaceBoycottHelper(T, NewList)
+
 
 %Question 11
 % calculate the difference in price between the boycott item and its alternative.
